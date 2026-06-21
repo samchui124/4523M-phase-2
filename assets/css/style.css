@@ -1,0 +1,162 @@
+/* ================================================================
+   Furniture Shop – Custom Stylesheet
+   Uses Bootstrap 5 as base; this file adds project-specific styles.
+   ================================================================ */
+
+/* --- Typography & Colours ----------------------------------- */
+:root {
+    --brand-dark:  #1a1a2e;
+    --brand-mid:   #16213e;
+    --brand-accent:#e94560;
+    --brand-gold:  #f5a623;
+}
+
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- Navbar ------------------------------------------------- */
+.navbar-brand { font-size: 1.3rem; letter-spacing: .5px; }
+
+/* --- Hero / Landing ----------------------------------------- */
+.hero-section {
+    background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-mid) 100%);
+    color: #fff;
+    padding: 4rem 1rem;
+    text-align: center;
+    border-radius: .5rem;
+    margin-bottom: 2rem;
+}
+.hero-section h1 { font-size: 2.5rem; font-weight: 700; }
+.hero-section p  { font-size: 1.1rem; opacity: .85; }
+
+.portal-card {
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,.1);
+    transition: transform .2s, box-shadow .2s;
+    cursor: pointer;
+}
+.portal-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 30px rgba(0,0,0,.18);
+}
+.portal-card .card-body { padding: 2.5rem 2rem; }
+.portal-card .portal-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+.portal-card.customer { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+.portal-card.staff    { background: linear-gradient(135deg, #f093fb, #f5576c); color: #fff; }
+
+/* --- Auth Forms --------------------------------------------- */
+.auth-wrapper {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,.12);
+}
+.auth-card .card-header {
+    background: var(--brand-dark);
+    color: #fff;
+    border-radius: 1rem 1rem 0 0 !important;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+/* --- Product / Furniture Cards ----------------------------- */
+.furniture-card {
+    border: none;
+    border-radius: .75rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    transition: transform .2s, box-shadow .2s;
+    height: 100%;
+}
+.furniture-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0,0,0,.14);
+}
+.furniture-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-radius: .75rem .75rem 0 0;
+}
+.furniture-card .price-tag {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--brand-accent);
+}
+.sold-out-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #dc3545;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: .8rem;
+    font-weight: 600;
+}
+
+/* --- Tables ------------------------------------------------- */
+.table-wrapper { border-radius: .5rem; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,.07); }
+.table th { background-color: var(--brand-dark); color: #fff; white-space: nowrap; }
+.table-hover tbody tr:hover { background-color: #f0f4ff; }
+
+/* Sortable column header links */
+.sort-link { color: #fff; text-decoration: none; }
+.sort-link:hover { color: var(--brand-gold); }
+.sort-link .sort-icon { font-size: .75rem; margin-left: 4px; }
+
+/* --- Status Badges ------------------------------------------ */
+.badge { font-size: .8rem; padding: .35em .65em; }
+
+/* --- Page headings ------------------------------------------ */
+.page-header {
+    border-bottom: 3px solid var(--brand-accent);
+    padding-bottom: .5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* --- Forms -------------------------------------------------- */
+.form-card {
+    background: #fff;
+    border: none;
+    border-radius: .75rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    padding: 2rem;
+}
+
+/* --- Alerts ------------------------------------------------- */
+.alert { border-radius: .5rem; }
+
+/* --- Image thumbnails --------------------------------------- */
+.img-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+}
+.img-medium {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+/* --- Material usage table inside manage orders ------------- */
+.material-row td { background-color: #fafafa; font-size: .9rem; }
+
+/* --- Responsive tweaks ------------------------------------- */
+@media (max-width: 768px) {
+    .hero-section h1 { font-size: 1.8rem; }
+    .portal-card .portal-icon { font-size: 2.5rem; }
+    .furniture-card .card-img-top { height: 150px; }
+}
