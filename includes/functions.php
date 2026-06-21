@@ -69,7 +69,7 @@ function checkMaterialStock(mysqli $conn, int $fid, int $qty, int $existingQty =
         $available = $row['mavlqty'] + $restored;
         if ($available < $needed) {
             $errors[] = "Insufficient stock for <strong>" . h($row['mname']) . "</strong>: "
-                      . "need {$needed} {$row['pmqty']}, available {$available}.";
+                      . "need {$needed}, available {$available} " . h($row['munit']) . ".";
         }
     }
     mysqli_stmt_close($stmt);

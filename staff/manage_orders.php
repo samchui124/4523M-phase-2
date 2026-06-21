@@ -25,8 +25,8 @@ $sql = "SELECT
         JOIN OrderFurnitures of2 ON o.oid  = of2.oid
         JOIN Furnitures f        ON of2.fid = f.fid
         JOIN Customers c         ON o.cid   = c.cid
-        JOIN FurnitureMaterials fm ON f.fid  = fm.fid
-        JOIN Materials m          ON fm.mid  = m.mid
+        LEFT JOIN FurnitureMaterials fm ON f.fid  = fm.fid
+        LEFT JOIN Materials m          ON fm.mid  = m.mid
         ORDER BY o.oid DESC, m.mname ASC";
 
 $result = mysqli_query($conn, $sql);
@@ -53,15 +53,18 @@ while ($row = mysqli_fetch_assoc($result)) {
             'materials'      => [],
         ];
     }
-    $orders[$oid]['materials'][] = [
-        'mid'      => $row['mid'],
-        'mname'    => $row['mname'],
-        'mphyqty'  => $row['mphyqty'],
-        'mavlqty'  => $row['mavlqty'],
-        'munit'    => $row['munit'],
-        'pmqty'    => $row['pmqty'],
-        'used_qty' => $row['used_qty'],
-    ];
+    // Only add material row if material data is present (LEFT JOIN may produce NULLs)
+    if ($row['mid'] !== null) {
+        $orders[$oid]['materials'][] = [
+            'mid'      => $row['mid'],
+            'mname'    => $row['mname'],
+            'mphyqty'  => $row['mphyqty'],
+            'mavlqty'  => $row['mavlqty'],
+            'munit'    => $row['munit'],
+            'pmqty'    => $row['pmqty'],
+            'used_qty' => $row['used_qty'],
+        ];
+    }
 }
 
 $pageTitle  = 'Manage Orders';

@@ -8,19 +8,16 @@ requireCustomer();
 // -------------------------------------------------------
 // Sorting
 // -------------------------------------------------------
-$allowedSort = ['fname', 'fprice', 'mavlqty'];
-$sort = in_array($_GET['sort'] ?? '', $allowedSort) ? $_GET['sort'] : 'fname';
-$dir  = ($_GET['dir'] ?? 'asc') === 'desc' ? 'desc' : 'asc';
-$nextDir = $dir === 'asc' ? 'desc' : 'asc';
-
-// Build sort column expression (for derived column)
-if ($sort === 'mavlqty') {
-    $sortExpr = 'avl_qty';
-} elseif ($sort === 'fprice') {
-    $sortExpr = 'f.fprice';
-} else {
-    $sortExpr = 'f.fname';
-}
+// Sorting – explicit whitelist map for safety
+$sortMap = [
+    'fname'   => 'f.fname',
+    'fprice'  => 'f.fprice',
+    'mavlqty' => 'avl_qty',
+];
+$sortKey  = isset($sortMap[$_GET['sort'] ?? '']) ? ($_GET['sort'] ?? '') : 'fname';
+$sortExpr = $sortMap[$sortKey];
+$sort     = $sortKey; // used for UI highlighting
+$dir      = ($_GET['dir'] ?? 'asc') === 'desc' ? 'desc' : 'asc';
 
 $sql = "SELECT f.fid, f.fname, f.fdesc, f.fimage, f.fprice,
                COALESCE(SUM(fm.pmqty), 0) AS total_materials,

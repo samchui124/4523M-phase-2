@@ -8,11 +8,19 @@ requireCustomer();
 $customerId = (int)$_SESSION['customer_id'];
 
 // -------------------------------------------------------
-// Sorting
+// Sorting – use an explicit whitelist map to prevent injection
 // -------------------------------------------------------
-$allowedSort = ['oid', 'odate', 'ototalamount', 'odeliverydate', 'ostatus'];
-$sort = in_array($_GET['sort'] ?? '', $allowedSort) ? $_GET['sort'] : 'odate';
-$dir  = ($_GET['dir'] ?? 'desc') === 'asc' ? 'asc' : 'desc';
+$sortMap = [
+    'oid'          => 'o.oid',
+    'odate'        => 'o.odate',
+    'ototalamount' => 'o.ototalamount',
+    'odeliverydate'=> 'o.odeliverydate',
+    'ostatus'      => 'o.ostatus',
+];
+$sortKey = isset($sortMap[$_GET['sort'] ?? '']) ? ($_GET['sort'] ?? '') : 'odate';
+$sortCol = $sortMap[$sortKey];
+$dir     = ($_GET['dir'] ?? 'desc') === 'asc' ? 'asc' : 'desc';
+$sort    = $sortKey; // used for UI highlighting
 
 $sql = "SELECT o.oid, o.odate, f.fid, f.fname, of2.oqty,
                o.ototalamount, o.cid, o.odeliverydate, o.odeliveraddress, o.ostatus
@@ -20,7 +28,7 @@ $sql = "SELECT o.oid, o.odate, f.fid, f.fname, of2.oqty,
         JOIN OrderFurnitures of2 ON o.oid = of2.oid
         JOIN Furnitures f ON of2.fid = f.fid
         WHERE o.cid = ?
-        ORDER BY o.{$sort} {$dir}";
+        ORDER BY {$sortCol} {$dir}";
 
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_bind_param($stmt, 'i', $customerId);
