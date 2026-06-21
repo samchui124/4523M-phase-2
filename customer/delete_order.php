@@ -28,8 +28,8 @@ $stmtO = mysqli_prepare($conn,
      FROM Orders o
      JOIN OrderFurnitures of2 ON o.oid = of2.oid
      WHERE o.oid = ? AND o.cid = ?");
-mysqli_bind_param($stmtO, 'ii', $oid, $customerId);
-mysqli_execute($stmtO);
+mysqli_stmt_bind_param($stmtO, 'ii', $oid, $customerId);
+mysqli_stmt_execute($stmtO);
 $order = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtO));
 mysqli_stmt_close($stmtO);
 
@@ -68,14 +68,14 @@ try {
 
     // Delete OrderFurnitures first (FK child)
     $delOf = mysqli_prepare($conn, "DELETE FROM OrderFurnitures WHERE oid = ?");
-    mysqli_bind_param($delOf, 'i', $oid);
-    mysqli_execute($delOf);
+    mysqli_stmt_bind_param($delOf, 'i', $oid);
+    mysqli_stmt_execute($delOf);
     mysqli_stmt_close($delOf);
 
     // Delete Order
     $delO = mysqli_prepare($conn, "DELETE FROM Orders WHERE oid = ? AND cid = ?");
-    mysqli_bind_param($delO, 'ii', $oid, $customerId);
-    mysqli_execute($delO);
+    mysqli_stmt_bind_param($delO, 'ii', $oid, $customerId);
+    mysqli_stmt_execute($delO);
     mysqli_stmt_close($delO);
 
     mysqli_commit($conn);

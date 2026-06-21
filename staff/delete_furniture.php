@@ -23,8 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
              FROM OrderFurnitures of2
              JOIN Orders o ON of2.oid = o.oid
              WHERE of2.fid = ?");
-        mysqli_bind_param($chk, 'i', $fid);
-        mysqli_execute($chk);
+        mysqli_stmt_bind_param($chk, 'i', $fid);
+        mysqli_stmt_execute($chk);
         $cnt = (int)(mysqli_fetch_assoc(mysqli_stmt_get_result($chk))['cnt'] ?? 0);
         mysqli_stmt_close($chk);
 
@@ -36,14 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 // Delete FurnitureMaterials first
                 $delFm = mysqli_prepare($conn, "DELETE FROM FurnitureMaterials WHERE fid = ?");
-                mysqli_bind_param($delFm, 'i', $fid);
-                mysqli_execute($delFm);
+                mysqli_stmt_bind_param($delFm, 'i', $fid);
+                mysqli_stmt_execute($delFm);
                 mysqli_stmt_close($delFm);
 
                 // Delete Furniture
                 $delF = mysqli_prepare($conn, "DELETE FROM Furnitures WHERE fid = ?");
-                mysqli_bind_param($delF, 'i', $fid);
-                mysqli_execute($delF);
+                mysqli_stmt_bind_param($delF, 'i', $fid);
+                mysqli_stmt_execute($delF);
                 mysqli_stmt_close($delF);
 
                 mysqli_commit($conn);

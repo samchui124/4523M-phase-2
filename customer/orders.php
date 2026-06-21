@@ -31,8 +31,8 @@ $sql = "SELECT o.oid, o.odate, f.fid, f.fname, of2.oqty,
         ORDER BY {$sortCol} {$dir}";
 
 $stmt = mysqli_prepare($conn, $sql);
-mysqli_bind_param($stmt, 'i', $customerId);
-mysqli_execute($stmt);
+mysqli_stmt_bind_param($stmt, 'i', $customerId);
+mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
 $flashSuccess = flash('flash_success');

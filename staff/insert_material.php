@@ -22,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Available quantity starts equal to physical quantity
         $stmt = mysqli_prepare($conn,
             "INSERT INTO Materials (mname, mqty, mavlqty, munit) VALUES (?, ?, ?, ?)");
-        mysqli_bind_param($stmt, 'siis', $mname, $mqty, $mqty, $munit);
-        if (mysqli_execute($stmt)) {
+        mysqli_stmt_bind_param($stmt, 'siis', $mname, $mqty, $mqty, $munit);
+        if (mysqli_stmt_execute($stmt)) {
             $newMid  = (int)mysqli_insert_id($conn);
             $success = "Material #$newMid \"" . h($mname) . "\" added successfully!";
         } else {

@@ -26,8 +26,8 @@ $stmtF = mysqli_prepare($conn,
      JOIN Materials m ON fm.mid = m.mid
      WHERE f.fid = ?
      GROUP BY f.fid, f.fname, f.fdesc, f.fimage, f.fprice");
-mysqli_bind_param($stmtF, 'i', $fid);
-mysqli_execute($stmtF);
+mysqli_stmt_bind_param($stmtF, 'i', $fid);
+mysqli_stmt_execute($stmtF);
 $furniture = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtF));
 mysqli_stmt_close($stmtF);
 
@@ -77,17 +77,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $insOrder = mysqli_prepare($conn,
                     "INSERT INTO Orders (odate, ototalamount, cid, odeliverydate, odeliveraddress, ostatus)
                      VALUES (?, ?, ?, ?, ?, 1)");
-                mysqli_bind_param($insOrder, 'sdiss',
+                mysqli_stmt_bind_param($insOrder, 'sdiss',
                     $orderDate, $totalAmount, $customerId, $deliverDate, $deliverAddr);
-                mysqli_execute($insOrder);
+                mysqli_stmt_execute($insOrder);
                 $newOid = (int)mysqli_insert_id($conn);
                 mysqli_stmt_close($insOrder);
 
                 // Insert OrderFurnitures
                 $insOf = mysqli_prepare($conn,
                     "INSERT INTO OrderFurnitures (oid, fid, oqty) VALUES (?, ?, ?)");
-                mysqli_bind_param($insOf, 'iii', $newOid, $fid, $oqty);
-                mysqli_execute($insOf);
+                mysqli_stmt_bind_param($insOf, 'iii', $newOid, $fid, $oqty);
+                mysqli_stmt_execute($insOf);
                 mysqli_stmt_close($insOf);
 
                 // Deduct material available quantities

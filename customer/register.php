@@ -21,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Check duplicate username
         $chk = mysqli_prepare($conn, "SELECT cid FROM Customers WHERE cname = ?");
-        mysqli_bind_param($chk, 's', $cname);
-        mysqli_execute($chk);
+        mysqli_stmt_bind_param($chk, 's', $cname);
+        mysqli_stmt_execute($chk);
         mysqli_stmt_store_result($chk);
         $exists = mysqli_stmt_num_rows($chk) > 0;
         mysqli_stmt_close($chk);
@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ins = mysqli_prepare($conn,
                 "INSERT INTO Customers (cname, cpassword, ctel, caddr, company)
                  VALUES (?, ?, ?, ?, ?)");
-            mysqli_bind_param($ins, 'sssss', $cname, $hashed, $ctel, $caddr, $comp);
-            if (mysqli_execute($ins)) {
+            mysqli_stmt_bind_param($ins, 'sssss', $cname, $hashed, $ctel, $caddr, $comp);
+            if (mysqli_stmt_execute($ins)) {
                 $success = 'Account created! You can now log in.';
             } else {
                 $error = 'Registration failed. Please try again.';

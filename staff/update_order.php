@@ -74,15 +74,15 @@ try {
     // Update Orders
     $updO = mysqli_prepare($conn,
         "UPDATE Orders SET ototalamount = ?, ostatus = ? WHERE oid = ?");
-    mysqli_bind_param($updO, 'dii', $newTotal, $newStatus, $oid);
-    mysqli_execute($updO);
+    mysqli_stmt_bind_param($updO, 'dii', $newTotal, $newStatus, $oid);
+    mysqli_stmt_execute($updO);
     mysqli_stmt_close($updO);
 
     // Update OrderFurnitures quantity
     $updOf = mysqli_prepare($conn,
         "UPDATE OrderFurnitures SET oqty = ? WHERE oid = ? AND fid = ?");
-    mysqli_bind_param($updOf, 'iii', $newQty, $oid, $fid);
-    mysqli_execute($updOf);
+    mysqli_stmt_bind_param($updOf, 'iii', $newQty, $oid, $fid);
+    mysqli_stmt_execute($updOf);
     mysqli_stmt_close($updOf);
 
     mysqli_commit($conn);

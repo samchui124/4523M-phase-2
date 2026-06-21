@@ -62,8 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Insert furniture
             $insF = mysqli_prepare($conn,
                 "INSERT INTO Furnitures (fname, fdesc, fimage, fprice) VALUES (?, ?, ?, ?)");
-            mysqli_bind_param($insF, 'sssd', $fname, $fdesc, $fimage, $fprice);
-            mysqli_execute($insF);
+            mysqli_stmt_bind_param($insF, 'sssd', $fname, $fdesc, $fimage, $fprice);
+            mysqli_stmt_execute($insF);
             $newFid = (int)mysqli_insert_id($conn);
             mysqli_stmt_close($insF);
 
@@ -71,8 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $insFm = mysqli_prepare($conn,
                 "INSERT INTO FurnitureMaterials (fid, mid, pmqty) VALUES (?, ?, ?)");
             foreach ($materialRows as $mid => $pmqty) {
-                mysqli_bind_param($insFm, 'iii', $newFid, $mid, $pmqty);
-                mysqli_execute($insFm);
+                mysqli_stmt_bind_param($insFm, 'iii', $newFid, $mid, $pmqty);
+                mysqli_stmt_execute($insFm);
             }
             mysqli_stmt_close($insFm);
 

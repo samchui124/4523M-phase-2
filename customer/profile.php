@@ -12,8 +12,8 @@ $error   = '';
 // Load current customer data
 $stmtC = mysqli_prepare($conn,
     "SELECT cid, cname, ctel, caddr FROM Customers WHERE cid = ?");
-mysqli_bind_param($stmtC, 'i', $customerId);
-mysqli_execute($stmtC);
+mysqli_stmt_bind_param($stmtC, 'i', $customerId);
+mysqli_stmt_execute($stmtC);
 $customer = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtC));
 mysqli_stmt_close($stmtC);
 
@@ -41,21 +41,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
             $stmt = mysqli_prepare($conn,
                 "UPDATE Customers SET cpassword = ?, ctel = ?, caddr = ? WHERE cid = ?");
-            mysqli_bind_param($stmt, 'sssi', $hashed, $newTel, $newAddr, $customerId);
+            mysqli_stmt_bind_param($stmt, 'sssi', $hashed, $newTel, $newAddr, $customerId);
         } else {
             $stmt = mysqli_prepare($conn,
                 "UPDATE Customers SET ctel = ?, caddr = ? WHERE cid = ?");
-            mysqli_bind_param($stmt, 'ssi', $newTel, $newAddr, $customerId);
+            mysqli_stmt_bind_param($stmt, 'ssi', $newTel, $newAddr, $customerId);
         }
 
-        if (mysqli_execute($stmt)) {
+        if (mysqli_stmt_execute($stmt)) {
             $success = 'Profile updated successfully!';
             // Reload data
             mysqli_stmt_close($stmt);
             $stmtC2 = mysqli_prepare($conn,
                 "SELECT cid, cname, ctel, caddr FROM Customers WHERE cid = ?");
-            mysqli_bind_param($stmtC2, 'i', $customerId);
-            mysqli_execute($stmtC2);
+            mysqli_stmt_bind_param($stmtC2, 'i', $customerId);
+            mysqli_stmt_execute($stmtC2);
             $customer = mysqli_fetch_assoc(mysqli_stmt_get_result($stmtC2));
             mysqli_stmt_close($stmtC2);
         } else {

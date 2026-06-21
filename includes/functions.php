@@ -60,8 +60,8 @@ function checkMaterialStock(mysqli $conn, int $fid, int $qty, int $existingQty =
          FROM FurnitureMaterials fm
          JOIN Materials m ON fm.mid = m.mid
          WHERE fm.fid = ?");
-    mysqli_bind_param($stmt, 'i', $fid);
-    mysqli_execute($stmt);
+    mysqli_stmt_bind_param($stmt, 'i', $fid);
+    mysqli_stmt_execute($stmt);
     $res = mysqli_stmt_get_result($stmt);
     while ($row = mysqli_fetch_assoc($res)) {
         $needed   = $row['pmqty'] * $qty;
@@ -86,8 +86,8 @@ function deductMaterials(mysqli $conn, int $fid, int $qty): void {
          JOIN FurnitureMaterials fm ON m.mid = fm.mid
          SET m.mavlqty = m.mavlqty - (fm.pmqty * ?)
          WHERE fm.fid = ?");
-    mysqli_bind_param($stmt, 'ii', $qty, $fid);
-    mysqli_execute($stmt);
+    mysqli_stmt_bind_param($stmt, 'ii', $qty, $fid);
+    mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }
 
@@ -101,7 +101,7 @@ function restoreMaterials(mysqli $conn, int $fid, int $qty): void {
          JOIN FurnitureMaterials fm ON m.mid = fm.mid
          SET m.mavlqty = m.mavlqty + (fm.pmqty * ?)
          WHERE fm.fid = ?");
-    mysqli_bind_param($stmt, 'ii', $qty, $fid);
-    mysqli_execute($stmt);
+    mysqli_stmt_bind_param($stmt, 'ii', $qty, $fid);
+    mysqli_stmt_execute($stmt);
     mysqli_stmt_close($stmt);
 }

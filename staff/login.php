@@ -20,8 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $stmt = mysqli_prepare($conn,
             "SELECT sid, sname, spassword, srole FROM Staffs WHERE sname = ?");
-        mysqli_bind_param($stmt, 's', $sname);
-        mysqli_execute($stmt);
+        mysqli_stmt_bind_param($stmt, 's', $sname);
+        mysqli_stmt_execute($stmt);
         $res  = mysqli_stmt_get_result($stmt);
         $staff = mysqli_fetch_assoc($res);
         mysqli_stmt_close($stmt);
