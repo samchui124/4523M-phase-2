@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $stmt = mysqli_prepare($conn,
             "SELECT cid, cname, cpassword FROM Customers WHERE cname = ?");
-        mysqli_bind_param($stmt, 's', $cname);
+        mysqli_stmt_bind_param($stmt, 's', $cname);
         mysqli_execute($stmt);
         $res = mysqli_stmt_get_result($stmt);
         $customer = mysqli_fetch_assoc($res);
