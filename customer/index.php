@@ -60,7 +60,7 @@ function sortUrl(string $col, string $current, string $currentDir): string {
 <?php endif; ?>
 <?php if ($flashError): ?>
 <div class="alert alert-danger alert-dismissible fade show alert-auto-dismiss">
-    <?= $flashError /* already contains HTML */ ?>
+    <?= h($flashError) ?>
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
 <?php endif; ?>

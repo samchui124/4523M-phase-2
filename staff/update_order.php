@@ -49,7 +49,7 @@ try {
             // Need more stock
             $check = checkMaterialStock($conn, $fid, $delta);
             if (!$check['ok']) {
-                throw new RuntimeException('Insufficient material stock: ' . implode('; ', array_map('strip_tags', $check['errors'])));
+                throw new RuntimeException('Insufficient material stock: ' . implode('; ', $check['errors']));
             }
             deductMaterials($conn, $fid, $delta);
         } elseif ($delta < 0) {
@@ -62,7 +62,7 @@ try {
         // Rejected → Active: deduct new quantity
         $check = checkMaterialStock($conn, $fid, $newQty);
         if (!$check['ok']) {
-            throw new RuntimeException('Insufficient material stock: ' . implode('; ', array_map('strip_tags', $check['errors'])));
+            throw new RuntimeException('Insufficient material stock: ' . implode('; ', $check['errors']));
         }
         deductMaterials($conn, $fid, $newQty);
     }

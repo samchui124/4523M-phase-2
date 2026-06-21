@@ -60,12 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($deliverDate === '') {
         $error = 'Delivery date is required.';
     } elseif (strtotime($deliverDate) <= strtotime('today')) {
-        $error = 'Delivery date must be in the future.';
+        $error = 'Delivery date must be tomorrow or later.';
     } else {
         // Check material stock
         $check = checkMaterialStock($conn, $fid, $oqty);
         if (!$check['ok']) {
-            $error = 'Cannot place order:<br>' . implode('<br>', $check['errors']);
+            $error = 'Cannot place order: ' . implode('; ', $check['errors']);
         } else {
             // Calculate total amount
             $totalAmount = round((float)$furniture['fprice'] * $oqty, 2);
@@ -140,7 +140,7 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="form-card">
             <?php if ($error): ?>
             <div class="alert alert-danger alert-dismissible fade show alert-auto-dismiss">
-                <?= $error ?>
+                <?= h($error) ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
             <?php endif; ?>

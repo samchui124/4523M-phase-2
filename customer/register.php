@@ -30,11 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($exists) {
             $error = 'Username already taken. Please choose another.';
         } else {
-            $comp = $company !== '' ? $company : null;
+            $comp   = $company !== '' ? $company : null;
+            $hashed = password_hash($cpassword, PASSWORD_DEFAULT);
             $ins = mysqli_prepare($conn,
                 "INSERT INTO Customers (cname, cpassword, ctel, caddr, company)
                  VALUES (?, ?, ?, ?, ?)");
-            mysqli_bind_param($ins, 'sssss', $cname, $cpassword, $ctel, $caddr, $comp);
+            mysqli_bind_param($ins, 'sssss', $cname, $hashed, $ctel, $caddr, $comp);
             if (mysqli_execute($ins)) {
                 $success = 'Account created! You can now log in.';
             } else {

@@ -35,11 +35,15 @@ CREATE TABLE Materials (
 ) ENGINE=InnoDB;
 
 INSERT INTO Materials (mname, mqty, mavlqty, munit) VALUES
--- Order 1 uses 2 Oak Planks (chair x1), Order 2 uses 12 Oak Planks (bed x1)
-('Oak Wood Plank',   500, 486, 'pcs'),
+-- mavlqty is pre-deducted for the 3 sample orders:
+--   Order 1 (Oak Chair x1):  2 planks
+--   Order 2 (Bed Frame x1): 12 planks
+--   Order 3 (Sofa x1):       5 planks + 10 fabric + 3 foam
+-- Oak plank: 500 - 2 - 12 - 5 = 481
+('Oak Wood Plank',   500, 481, 'pcs'),
 ('Steel Tube',       200, 200, 'meter'),
-('Fabric Cloth',     100, 100, 'meter'),
-('High Density Foam', 50,  50, 'block');
+('Fabric Cloth',     100,  90, 'meter'),   -- 100 - 10 = 90
+('High Density Foam', 50,  47, 'block');   -- 50 - 3 = 47
 
 -- -------------------------------------------------------
 -- Customers
@@ -55,8 +59,9 @@ CREATE TABLE Customers (
 ) ENGINE=InnoDB;
 
 INSERT INTO Customers (cname, cpassword, ctel, caddr, company) VALUES
-('taiman',  'cust123', '23456789', 'Flat A, 12/F, Sunshine Building, Mong Kok, Kowloon',              'ABC Trading Ltd.'),
-('siuming', 'cust456', '98765432', 'Room 8, 3/F, Harbour View Court, Tsuen Wan, New Territories',     NULL);
+-- Passwords are bcrypt hashes. Plain-text: taiman=cust123, siuming=cust456
+('taiman',  '$2y$10$PYlFX7KOICW.d/Kk6XURHuh/xRGHcZQalUqX3x0agikm.JMa2YjFu', '23456789', 'Flat A, 12/F, Sunshine Building, Mong Kok, Kowloon',              'ABC Trading Ltd.'),
+('siuming', '$2y$10$Bwjvad.FBSrxvQx9HvPPSulFWqKw90xIzQ1C62bbEs0YBNNnqE2g.', '98765432', 'Room 8, 3/F, Harbour View Court, Tsuen Wan, New Territories',     NULL);
 
 -- -------------------------------------------------------
 -- Furnitures  (fimage: filename stored in assets/images/furniture/)
@@ -91,7 +96,8 @@ CREATE TABLE Staffs (
 ) ENGINE=InnoDB;
 
 INSERT INTO Staffs (spassword, sname, srole, stel) VALUES
-('admin', 'Admin', 'Administrator', '12345678');
+-- Password is a bcrypt hash. Plain-text: admin
+('$2y$10$7VtPGxnZsc8q3o/SR90Is.ZTw..UVCwvir8x.twBCvS1T8R56mbC2', 'Admin', 'Administrator', '12345678');
 
 -- -------------------------------------------------------
 -- Orders
@@ -130,11 +136,6 @@ INSERT INTO OrderFurnitures (oid, fid, oqty) VALUES
 (1, 1, 1),   -- Order 1: Oak Dining Chair x1
 (2, 6, 1),   -- Order 2: Queen Size Bed Frame x1
 (3, 3, 1);   -- Order 3: 3-Seater Fabric Sofa x1
-
--- Update mavlqty for order 3 (Sofa uses 5 planks, 10 fabric, 3 foam)
-UPDATE Materials SET mavlqty = mavlqty - 5  WHERE mid = 1; -- planks: 486-5=481
-UPDATE Materials SET mavlqty = mavlqty - 10 WHERE mid = 3; -- fabric: 100-10=90
-UPDATE Materials SET mavlqty = mavlqty - 3  WHERE mid = 4; -- foam:   50-3=47
 
 -- -------------------------------------------------------
 -- FurnitureMaterials  (pmqty = units of material per 1 furniture item)

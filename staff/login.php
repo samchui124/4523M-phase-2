@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $staff = mysqli_fetch_assoc($res);
         mysqli_stmt_close($stmt);
 
-        if ($staff && $staff['spassword'] === $spassword) {
+        if ($staff && password_verify($spassword, $staff['spassword'])) {
             session_regenerate_id(true);
             $_SESSION['user_type']  = 'staff';
             $_SESSION['staff_id']   = $staff['sid'];

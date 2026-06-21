@@ -56,7 +56,7 @@ function h(string $value): string {
 function checkMaterialStock(mysqli $conn, int $fid, int $qty, int $existingQty = 0): array {
     $errors = [];
     $stmt = mysqli_prepare($conn,
-        "SELECT m.mname, m.mavlqty, fm.pmqty
+        "SELECT m.mname, m.mavlqty, m.munit, fm.pmqty
          FROM FurnitureMaterials fm
          JOIN Materials m ON fm.mid = m.mid
          WHERE fm.fid = ?");
@@ -68,8 +68,8 @@ function checkMaterialStock(mysqli $conn, int $fid, int $qty, int $existingQty =
         $restored = $row['pmqty'] * $existingQty;   // already consumed by this order
         $available = $row['mavlqty'] + $restored;
         if ($available < $needed) {
-            $errors[] = "Insufficient stock for <strong>" . h($row['mname']) . "</strong>: "
-                      . "need {$needed}, available {$available} " . h($row['munit']) . ".";
+            $errors[] = "Insufficient stock for " . $row['mname'] . ": "
+                      . "need {$needed}, available {$available} " . $row['munit'] . ".";
         }
     }
     mysqli_stmt_close($stmt);

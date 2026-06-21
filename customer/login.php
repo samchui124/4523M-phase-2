@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $customer = mysqli_fetch_assoc($res);
         mysqli_stmt_close($stmt);
 
-        if ($customer && $customer['cpassword'] === $cpassword) {
+        if ($customer && password_verify($cpassword, $customer['cpassword'])) {
             session_regenerate_id(true);
             $_SESSION['user_type']     = 'customer';
             $_SESSION['customer_id']   = $customer['cid'];

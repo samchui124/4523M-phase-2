@@ -38,9 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Passwords do not match.';
     } else {
         if ($newPassword !== '') {
+            $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
             $stmt = mysqli_prepare($conn,
                 "UPDATE Customers SET cpassword = ?, ctel = ?, caddr = ? WHERE cid = ?");
-            mysqli_bind_param($stmt, 'sssi', $newPassword, $newTel, $newAddr, $customerId);
+            mysqli_bind_param($stmt, 'sssi', $hashed, $newTel, $newAddr, $customerId);
         } else {
             $stmt = mysqli_prepare($conn,
                 "UPDATE Customers SET ctel = ?, caddr = ? WHERE cid = ?");
